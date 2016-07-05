@@ -1,0 +1,53 @@
+{
+  "title": "App",
+  "description": "An definition for http-app-router",
+  "type": "object",
+  "required": [
+    "name",
+    "routes",
+    "host"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the application."
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the application."
+    },
+    "routes": {
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "The routes the application handles.",
+          "items": {
+            "type": "string",
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        {
+          "type": "string",
+          "enum": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "host": {
+      "type": "string",
+      "format": "host-name"
+    },
+    "headers": {
+      "type": "object"
+    },
+    "transforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}
