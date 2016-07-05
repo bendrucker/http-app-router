@@ -19,7 +19,7 @@ function AppRouter (apps) {
 
   return function (req, res, callback) {
     router(req, res, {}, function (err) {
-      if (err.statusCode === 404) {
+      if (err.type === 'http-hash-router.not-found' && _default) {
         return _default(req, res, callback)
       }
 
