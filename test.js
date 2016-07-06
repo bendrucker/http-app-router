@@ -127,6 +127,33 @@ test('default route', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('transforms', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*',
+      transforms: [
+        'absolute'
+      ]
+    }
+  ])
+
+  const handler = Handler(router, t.end)
+
+  nock('https://github.com')
+    .get('/bendrucker')
+    .reply(200, '<script src="app.js"></script>')
+
+  inject(handler, {method: 'get', url: '/bendrucker'}, function (res) {
+    t.equal(res.payload, '<script src="https://github.com/app.js"></script>')
+  })
+
+  t.on('end', nock.cleanAll)
+})
+
 function Handler (router, onError) {
   return function (req, res) {
     router(req, res, onError)
