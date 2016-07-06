@@ -127,6 +127,44 @@ test('default route', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('splats', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*'
+    },
+    {
+      name: 'apple',
+      host: 'apple.com',
+      routes: [
+        '/iphone/*'
+      ],
+      headers: {
+        'secret-free-iphones': true
+      }
+    }
+  ])
+
+  const handler = Handler(router, t.end)
+
+  nock('https://apple.com', {
+    reqheaders: {
+      'secret-free-iphones': 'true'
+    }
+  })
+  .get('/iphone/free')
+  .reply(200, 'secret')
+
+  inject(handler, {method: 'get', url: '/iphone/free'}, function (res) {
+    t.equal(res.payload, 'secret')
+  })
+
+  t.on('end', nock.cleanAll)
+})
+
 test('transforms', function (t) {
   t.plan(1)
 
