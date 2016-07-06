@@ -9,7 +9,7 @@ module.exports = Transform
 function Transform (app) {
   if (!app.transforms) return PassThrough()
   const transformStreams = app.transforms.map((t) => transforms[t](app))
-  return app.tranforms.length > 1
+  return app.transforms.length > 1
     ? pumpify.apply(null, transformStreams)
     : transformStreams[0]
 }
