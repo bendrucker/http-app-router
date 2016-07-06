@@ -4,7 +4,7 @@ const test = require('tape')
 const proxyquire = require('proxyquire')
 
 test('fetch', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   const fetch = proxyquire('./fetch', {
     'simple-get': function (options, callback) {
@@ -14,10 +14,11 @@ test('fetch', function (t) {
           foo: 'bar'
         }
       })
+      callback()
     }
   })
 
   t.throws(fetch, /app is required/)
   t.throws(fetch.bind(null, {}), /path is required/)
-  fetch({host: 'host.co', headers: {foo: 'bar'}}, '/path?page=2', function noop () {})
+  fetch({host: 'host.co', headers: {foo: 'bar'}}, '/path?page=2', t.pass)
 })
