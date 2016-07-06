@@ -35,8 +35,8 @@ test('http-app-router', function (t) {
     .reply(200, 'modules?')
 
   nock('https://apple.com', {
-    headers: {
-      'secret-free-iphones': true
+    reqheaders: {
+      'secret-free-iphones': 'true'
     }
   })
   .get('/iphone')
