@@ -21,8 +21,11 @@
     "request"
   ],
   "devDependencies": {
-    "tape": "^4.0.0",
-    "standard": "^7.0.0"
+    "nock": "~8.0.0",
+    "proxyquire": "~1.7.10",
+    "shot": "~3.1.0",
+    "standard": "^7.0.0",
+    "tape": "^4.0.0"
   },
   "files": [
     "*.js",
