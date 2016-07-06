@@ -1,12 +1,10 @@
 'use strict'
 
 const HashRouter = require('http-hash-router')
-const get = require('simple-get')
 const partial = require('ap').partial
-const pumpify = require('pumpify')
-const PassThrough = require('readable-stream/passthrough')
 const validate = require('./validate')
-const transforms = require('./transforms')
+const fetch = require('./fetch')
+const Transform = require('./transform')
 
 module.exports = AppRouter
 
@@ -29,34 +27,21 @@ function AppRouter (apps) {
 
   function createRoutes (app) {
     if (app.routes === '*') {
-      _default = partial(AppStream, app)
+      _default = partial(sendApp, app)
       return
     }
 
-    app.routes.forEach((route) => router.set(route, partial(AppStream, app)))
+    app.routes.forEach((route) => router.set(route, partial(sendApp, app)))
   }
 }
 
-function AppStream (app, req, res, opts, callback) {
-  const options = {
-    url: ['http:', '//', app.host, req.path].join(''),
-    headers: app.headers
-  }
-
-  get(options, function (err, _res) {
+function sendApp (app, req, res, opts, callback) {
+  fetch(app, {path: req.path}, function (err, html) {
     if (err) return callback(err)
-    res.statusCode = _res.statusCode
+    res.statusCode = html.statusCode
 
-    _res
-      .pipe(AppTransform(app))
+    html
+      .pipe(Transform(app))
       .pipe(res)
   })
 }
-
-function AppTransform (app) {
-  if (!app.transforms) return PassThrough()
-  const transformFns = app.transforms.map((t) => transforms[t])
-  if (app.transforms.length === 1) return transformFns[0](app)
-  return pumpify.apply(null, transformFns)
-}
-
