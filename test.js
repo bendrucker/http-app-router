@@ -53,7 +53,7 @@ test('http-app-router', function (t) {
   t.on('end', nock.cleanAll)
 })
 
-test('error callback', function (t) {
+test('not found error callback', function (t) {
   t.plan(1)
 
   const router = Router([
@@ -152,6 +152,27 @@ test('transforms', function (t) {
   })
 
   t.on('end', nock.cleanAll)
+})
+
+test('app request error', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'dns.will.cause.an.err',
+      routes: '*',
+      transforms: [
+        'absolute'
+      ]
+    }
+  ])
+
+  const handler = Handler(router, function (err) {
+    t.equal(err.code, 'ENOTFOUND')
+  })
+
+  inject(handler, {method: 'get', url: '/bendrucker'}, t.fail)
 })
 
 function Handler (router, onError) {

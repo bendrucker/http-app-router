@@ -35,7 +35,7 @@ function AppRouter (apps) {
   }
 }
 
-function sendApp (app, req, res, opts, callback) {
+function sendApp (app, req, res, callback) {
   fetch(app, req.url, function (err, html) {
     if (err) return callback(err)
     res.statusCode = html.statusCode
