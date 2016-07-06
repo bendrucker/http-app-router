@@ -25,8 +25,8 @@
     "standard": "^7.0.0"
   },
   "files": [
-    "index.js",
-    "test.js"
+    "*.js",
+    "schema.json"
   ],
   "dependencies": {
     "absoluteify": "~1.0.0",
