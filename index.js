@@ -2,11 +2,20 @@
 
 const HashRouter = require('http-hash-router')
 const partial = require('ap').partial
+const TypedError = require('error/typed')
 const validate = require('./validate')
 const fetch = require('./fetch')
 const Transform = require('./transform')
 
 module.exports = AppRouter
+
+const MethodNotAllowed = TypedError({
+  type: 'http-app-router.method-not-allowed',
+  statusCode: 405,
+  message: 'Method not allowed: {method} {url}',
+  method: null,
+  url: null
+})
 
 function AppRouter (apps) {
   var _default = null
@@ -16,6 +25,13 @@ function AppRouter (apps) {
   apps.forEach(createRoutes)
 
   return function (req, res, callback) {
+    if (req.method !== 'GET') {
+      return callback(MethodNotAllowed({
+        method: req.method,
+        url: req.url
+      }))
+    }
+
     router(req, res, {}, function (err) {
       if (err.type === 'http-hash-router.not-found' && _default) {
         return _default(req, res, callback)

@@ -154,6 +154,24 @@ test('transforms', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('invalid method', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*'
+    }
+  ])
+
+  const handler = Handler(router, function (err) {
+    t.equal(err.statusCode, 405)
+  })
+
+  inject(handler, {method: 'post', url: '/bendrucker'}, t.fail.bind(t, 'unexpected response'))
+})
+
 test('app request error', function (t) {
   t.plan(1)
 
