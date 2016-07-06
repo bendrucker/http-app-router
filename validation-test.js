@@ -1,21 +1,21 @@
 'use strict'
 
 const test = require('tape')
-const Router = require('./router')
+const validate = require('./validate')
 
-test('router', function (t) {
-  t.test('schema validation', function (t) {
-    t.throws(Router.bind(null, [
+test('validate', function (t) {
+  t.test('schema', function (t) {
+    t.throws(validate.bind(null, [
       {}
     ]), /name is required/, 'requires name')
 
-    t.throws(Router.bind(null, [
+    t.throws(validate.bind(null, [
       {
         name: 'foo'
       }
     ]), /routes is required/, 'requires routes')
 
-    t.throws(Router.bind(null, [
+    t.throws(validate.bind(null, [
       {
         name: 'foo',
         routes: '*'
@@ -25,8 +25,8 @@ test('router', function (t) {
     t.end()
   })
 
-  t.test('transform validation', function (t) {
-    t.throws(Router.bind(null, [
+  t.test('transform', function (t) {
+    t.throws(validate.bind(null, [
       {
         name: 'foo',
         routes: '*',
@@ -37,8 +37,8 @@ test('router', function (t) {
     t.end()
   })
 
-  t.test('route validation', function (t) {
-    t.throws(Router.bind(null, [
+  t.test('route', function (t) {
+    t.throws(validate.bind(null, [
       {
         name: 'foo',
         routes: '*',
