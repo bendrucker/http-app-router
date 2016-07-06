@@ -9,13 +9,13 @@ const concat = require('concat-stream')
 const transforms = require('./transforms')
 
 test('transform', function (t) {
-  t.plan(2)
+  t.plan(4)
 
   // Pass a cloned transform object so we can add mocks
   const customTransforms = Object.assign({}, transforms, {
     noop: function (app) {
       t.ok(app, 'app is passed in')
-      return PassThrough()
+      return new PassThrough()
     },
     uppercase: function (app) {
       return transformify(upper)()
@@ -26,7 +26,19 @@ test('transform', function (t) {
     './transforms': customTransforms
   })
 
-  const transform = Transform({
+  const none = Transform({
+    host: 'none',
+    transforms: []
+  })
+
+  const one = Transform({
+    host: 'one',
+    transforms: [
+      'uppercase'
+    ]
+  })
+
+  const many = Transform({
     host: 'foo.bar',
     transforms: [
       'absolute',
@@ -35,11 +47,22 @@ test('transform', function (t) {
     ]
   })
 
-  toStream('<script src="app.js"></script>')
-    .pipe(transform)
+  toStream('hi')
+    .pipe(none)
     .pipe(concat(function (html) {
-      html = String(html)
-      t.equal(html, '<SCRIPT SRC="HTTPS://FOO.BAR/APP.JS"></SCRIPT>')
+      t.equal(String(html), 'hi')
+    }))
+
+  toStream('hi')
+    .pipe(one)
+    .pipe(concat(function (html) {
+      t.equal(String(html), 'HI')
+    }))
+
+  toStream('<script src="app.js"></script>')
+    .pipe(many)
+    .pipe(concat(function (html) {
+      t.equal(String(html), '<SCRIPT SRC="HTTPS://FOO.BAR/APP.JS"></SCRIPT>')
     }))
 })
 

@@ -7,7 +7,7 @@ const transforms = require('./transforms')
 module.exports = Transform
 
 function Transform (app) {
-  if (!app.transforms) return PassThrough()
+  if (!app.transforms || !app.transforms.length) return new PassThrough()
   const transformStreams = app.transforms.map((t) => transforms[t](app))
   return app.transforms.length > 1
     ? pumpify.apply(null, transformStreams)
