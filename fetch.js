@@ -5,11 +5,12 @@ const get = require('simple-get')
 
 module.exports = fetch
 
-function fetch (app, data, callback) {
-  assert(data.path, 'path is required')
+function fetch (app, path, callback) {
+  assert(app, 'app is required')
+  assert(path, 'path is required')
 
   const options = {
-    url: ['http:', '//', app.host, data.path].join(''),
+    url: ['https:', '//', app.host, path].join(''),
     headers: app.headers
   }
 
