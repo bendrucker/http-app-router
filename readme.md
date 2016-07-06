@@ -1,4 +1,4 @@
-# http-app-router [![Build Status](https://travis-ci.org/bendrucker/http-app-router.svg?branch=master)](https://travis-ci.org/bendrucker/http-app-router)
+# http-app-router [![Build Status](https://img.shields.io/travis/bendrucker/http-app-router/master.svg?style=flat-square)](https://travis-ci.org/bendrucker/http-app-router) [![Coverage](https://img.shields.io/codecov/c/github/bendrucker/http-app-router/master.svg?style=flat-square)](https://codecov.io/github/bendrucker/http-app-router) 
 
 > Request router for building HTTP proxy servers
 

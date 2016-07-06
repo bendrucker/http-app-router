@@ -1,3 +1,9 @@
 language: node_js
 node_js:
+- '4'
 - '6'
+script: nyc npm test
+after_success:
+- npm i -g codecov
+- nyc report --reporter=text-lcov > coverage.lcov
+- codecov
