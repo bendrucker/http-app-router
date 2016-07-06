@@ -2,6 +2,14 @@
 
 > Request router for building HTTP proxy servers
 
+http-app-router is a Node HTTP router designed for serving multiple HTML applications on the same domain. HTML applications might include:
+
+* A single page JavaScript web app
+* A CMS-powered blog
+* Static HTML content
+
+If it speaks HTTP and sends HTML, it's an HTML app. Apps are defined with a server `host` and a list of `routes` that should match to that app. The router will make a request to your app and stream the response down to the client.
+
 
 ## Install
 
