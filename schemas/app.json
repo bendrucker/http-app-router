@@ -56,7 +56,7 @@
     "timeout": {
       "type": "integer",
       "description": "The maximum amount of time in milliseconds that the application can take to respond",
-      "default": 10000,
+      "default": 0,
       "minimum": 0
     }
   },

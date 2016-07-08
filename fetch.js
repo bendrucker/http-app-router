@@ -15,5 +15,6 @@ function fetch (app, path, callback) {
     headers: app.headers
   }
 
-  timeout(get(options, callback), app.timeout)
+  const req = get(options, callback)
+  if (app.timeout) timeout(req, app.timeout)
 }
