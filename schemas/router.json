@@ -1,0 +1,19 @@
+{
+  "id": "http-app-router",
+  "title": "http-app-router configuration",
+  "description": "A configuration definition for http-app-router",
+  "type": "object",
+  "required": [
+    "apps"
+  ],
+  "properties": {
+    "apps": {
+      "type": "array",
+      "description": "An array of applications to serve",
+      "items": {
+        "$ref": "app"
+      }
+    }
+  },
+  "additionalProperties": false
+}

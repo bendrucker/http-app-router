@@ -1,6 +1,7 @@
 'use strict'
 
 const assert = require('assert')
+const timeout = require('timed-out')
 const get = require('simple-get')
 
 module.exports = fetch
@@ -14,5 +15,5 @@ function fetch (app, path, callback) {
     headers: app.headers
   }
 
-  get(options, callback)
+  timeout(get(options, callback), app.timeout)
 }
