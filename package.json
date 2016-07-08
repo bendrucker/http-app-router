@@ -33,7 +33,7 @@
   },
   "files": [
     "*.js",
-    "schema.json"
+    "schemas/"
   ],
   "dependencies": {
     "absoluteify": "~1.0.0",
