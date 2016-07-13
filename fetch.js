@@ -3,16 +3,22 @@
 const assert = require('assert')
 const timeout = require('timed-out')
 const get = require('simple-get')
+const extend = require('xtend')
+const filter = require('boolean-filter-obj')
+const cookie = require('./cookie')
 
 module.exports = fetch
 
-function fetch (app, path, callback) {
+function fetch (app, data, callback) {
   assert(app, 'app is required')
-  assert(path, 'path is required')
+  assert(data, 'data is required')
+  assert.equal(typeof data.url, 'string', 'data.url is required')
 
   const options = {
-    url: ['https:', '//', app.host, path].join(''),
-    headers: app.headers
+    url: ['https:', '//', app.host, data.url].join(''),
+    headers: filter(extend(app.headers, {
+      cookie: cookie.inbound(app.cookies, data.headers.cookie)
+    }))
   }
 
   const req = get(options, callback)

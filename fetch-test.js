@@ -24,6 +24,6 @@ test('fetch', function (t) {
   })
 
   t.throws(fetch, /app is required/)
-  t.throws(fetch.bind(null, {}), /path is required/)
-  fetch({host: 'host.co', headers: {foo: 'bar'}, timeout: 10}, '/path?page=2', t.pass)
+  t.throws(fetch.bind(null, {}, {}), /url is required/)
+  fetch({host: 'host.co', headers: {foo: 'bar'}, cookies: [], timeout: 10}, {url: '/path?page=2', headers: {cookie: ''}}, t.pass)
 })

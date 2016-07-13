@@ -3,9 +3,11 @@
 const HashRouter = require('http-hash-router')
 const partial = require('ap').partial
 const TypedError = require('error/typed')
+const pick = require('object-pick')
 const validate = require('./validate')
 const fetch = require('./fetch')
 const Transform = require('./transform')
+const cookie = require('./cookie')
 
 module.exports = AppRouter
 
@@ -53,9 +55,12 @@ function AppRouter (apps) {
 
 function sendApp (app, req, res, options, callback) {
   if (!callback) callback = options
-  fetch(app, req.url, function (err, html) {
+  fetch(app, pick(req, ['headers', 'url']), function (err, html) {
     if (err) return callback(err)
     res.statusCode = html.statusCode
+
+    const cookies = cookie.outbound(app.cookies, html.headers['set-cookie'])
+    if (cookies) res.setHeader('Set-Cookie', cookies)
 
     html
       .pipe(Transform(app))
