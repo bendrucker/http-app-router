@@ -12,6 +12,7 @@ module.exports = {
 // inbound(['beep'], 'beep=boop; foo=bar'})
 // => ['beep=boop']
 function inbound (whitelist, value) {
+  if (!value) return
   const data = cookie.parse(value)
 
   return whitelist
@@ -23,6 +24,7 @@ function inbound (whitelist, value) {
 // outbound(['beep'], ['beep=boop; maxAge=1', 'foo=bar']})
 // => ['beep=boop; max-age=1']
 function outbound (whitelist, values) {
+  if (!values) return
   const data = parseSet(values)
 
   return whitelist

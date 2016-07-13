@@ -192,6 +192,39 @@ test('transforms', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('cookies', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*',
+      cookies: [
+        'beep'
+      ]
+    }
+  ])
+
+  const handler = Handler(router, t.end)
+
+  nock('https://github.com', {
+    reqheaders: {
+      cookie: 'beep=boop'
+    }
+  })
+  .get('/bendrucker')
+  .reply(200, 'nom nom cookies', {
+    'Set-Cookie': 'beep=boop'
+  })
+
+  inject(handler, {method: 'get', url: '/bendrucker', headers: {cookie: 'beep=boop'}}, function (res) {
+    t.deepEqual(res.headers['set-cookie'], ['beep=boop'])
+  })
+
+  t.on('end', nock.cleanAll)
+})
+
 test('invalid method', function (t) {
   t.plan(1)
 
