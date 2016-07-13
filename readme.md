@@ -81,6 +81,12 @@ Type: `object`
 
 Optional headers to set on requests.
 
+###### cookies
+
+Type: `array[string]`
+
+A whitelist of cookie names that can be sent by a client or set by an app.
+
 ###### transforms
 
 Type: `array[string]`
