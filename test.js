@@ -127,6 +127,28 @@ test('default route', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('HEAD requests are allowed', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*'
+    }
+  ])
+
+  const handler = Handler(router, t.end)
+
+  nock('https://github.com')
+    .head('/bendrucker')
+    .reply(200)
+
+  inject(handler, {method: 'head', url: '/bendrucker'}, function (res) {
+    t.equal(res.statusCode, 200)
+  })
+})
+
 test('splats', function (t) {
   t.plan(1)
 

@@ -27,7 +27,9 @@ function AppRouter (apps) {
   apps.forEach(createRoutes)
 
   return function (req, res, callback) {
-    if (req.method !== 'GET') {
+    // Handle ourselves b/c http-hash-router will return 404 with a default
+    // route route regardless of the method
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
       return callback(MethodNotAllowed({
         method: req.method,
         url: req.url
@@ -55,7 +57,7 @@ function AppRouter (apps) {
 
 function sendApp (app, req, res, options, callback) {
   if (!callback) callback = options
-  fetch(app, pick(req, ['headers', 'url']), function (err, html) {
+  fetch(app, pick(req, ['headers', 'url', 'method']), function (err, html) {
     if (err) return callback(err)
     res.statusCode = html.statusCode
 

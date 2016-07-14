@@ -18,7 +18,8 @@ function fetch (app, data, callback) {
     url: ['https:', '//', app.host, data.url].join(''),
     headers: filter(extend(app.headers, {
       cookie: cookie.inbound(app.cookies, data.headers.cookie)
-    }))
+    })),
+    method: data.method
   }
 
   const req = get(options, callback)
