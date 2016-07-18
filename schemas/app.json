@@ -41,6 +41,11 @@
       "description": "The application's host where it serves HTTPS requests",
       "format": "host-name"
     },
+    "insecure": {
+      "type": "boolean",
+      "description": "Toggles requests to use HTTP instead of HTTPS",
+      "default": false
+    },
     "headers": {
       "type": "object",
       "description": "Headers to set on client requests for the app"

@@ -15,7 +15,7 @@ function fetch (app, data, callback) {
   assert.equal(typeof data.url, 'string', 'data.url is required')
 
   const options = {
-    url: ['https:', '//', app.host, data.url].join(''),
+    url: ['http', app.insecure ? '' : 's', '://', app.host, data.url].join(''),
     headers: filter(extend(app.headers, {
       cookie: cookie.inbound(app.cookies, data.headers.cookie)
     })),
