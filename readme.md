@@ -75,6 +75,13 @@ Type: `string`
 
 The application host.
 
+###### insecure
+
+Type: `boolean`  
+Default: `false`
+
+Toggles the app to be fetched over plain HTTP instead of HTTPS.
+
 ###### headers
 
 Type: `object`  
