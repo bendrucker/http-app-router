@@ -28,7 +28,7 @@ test('http-app-router', function (t) {
     }
   ])
 
-  const handler = Handler(router, t.end)
+  const handler = Handler(router, (err) => err && t.end(err))
 
   nock('https://github.com')
     .get('/bendrucker')
@@ -102,7 +102,7 @@ test('default route', function (t) {
     }
   ])
 
-  const handler = Handler(router, t.end)
+  const handler = Handler(router, (err) => err && t.end(err))
 
   nock('https://github.com')
     .get('/anyone-you-want')
@@ -138,7 +138,7 @@ test('HEAD requests are allowed', function (t) {
     }
   ])
 
-  const handler = Handler(router, t.end)
+  const handler = Handler(router, (err) => err && t.end(err))
 
   nock('https://github.com')
     .head('/bendrucker')
@@ -170,7 +170,7 @@ test('splats', function (t) {
     }
   ])
 
-  const handler = Handler(router, t.end)
+  const handler = Handler(router, (err) => err && t.end(err))
 
   nock('https://apple.com', {
     reqheaders: {
@@ -201,7 +201,7 @@ test('transforms', function (t) {
     }
   ])
 
-  const handler = Handler(router, t.end)
+  const handler = Handler(router, (err) => err && t.end(err))
 
   nock('https://github.com')
     .get('/bendrucker')
@@ -228,7 +228,7 @@ test('cookies', function (t) {
     }
   ])
 
-  const handler = Handler(router, t.end)
+  const handler = Handler(router, (err) => err && t.end(err))
 
   nock('https://github.com', {
     reqheaders: {
@@ -284,6 +284,35 @@ test('app request error', function (t) {
   })
 
   inject(handler, {method: 'get', url: '/bendrucker'}, t.fail)
+})
+
+test('logs', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*'
+    }
+  ])
+
+  nock('https://github.com')
+    .get('/bendrucker')
+    .reply(200)
+
+  const logs = []
+  router.onLog(logs.push.bind(logs))
+
+  const handler = Handler(router, (err) => err && t.end(err))
+
+  inject(handler, {method: 'get', url: '/bendrucker'}, function (res) {
+    t.deepEqual(logs, [
+      {level: 'debug', message: '/bendrucker -> default'},
+      {level: 'debug', message: '/bendrucker -> github'},
+      {level: 'info', message: 'github: 200'}
+    ])
+  })
 })
 
 function Handler (router, onError) {

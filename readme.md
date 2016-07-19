@@ -22,7 +22,7 @@ $ npm install --save http-app-router
 
 Pass an array of `apps` to the `Router` contructor to create a router handler. Use that handler to route requests and send a response if an app matches the request. Handlers are `req, res, callback` functions that you can use with plain `http.Server` instances or connect/express apps.
 
-The router is *greedy*. Any request it receives will either generate a response or an error (never both). The `callback` function is only called to handle errors.
+The router will *always* send a response when fetching the app is successful and will *never* send an error response. That's up to you.
 
 ```js
 var Router = require('http-app-router')
@@ -53,6 +53,8 @@ var server = http.createServer(function (req, res) {
 ## API
 
 #### `Router(apps)` -> `function`
+
+Returns a `router` function.
 
 ##### app
 
@@ -117,6 +119,15 @@ tranforms.uppercase = function (app) {
 }
 ```
 
+#### `router.onLog(listener)` -> `function`
+
+Listens on log output from the router.
+
+##### listener
+
+*Required*  
+Type: `function`  
+Arguments: `{level, message}`
 
 ## License
 
