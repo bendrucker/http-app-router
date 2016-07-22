@@ -37,7 +37,7 @@
   ],
   "dependencies": {
     "absoluteify": "~1.0.0",
-    "ajv": "~4.1.5",
+    "ajv": "~4.2.0",
     "ap": "~0.2.0",
     "boolean-filter-obj": "~1.0.0",
     "cookie": "~0.3.1",
