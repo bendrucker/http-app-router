@@ -11,7 +11,7 @@
     "url": "bendrucker.me"
   },
   "scripts": {
-    "test": "standard && tape *.js"
+    "test": "standard && 100 tape *.js"
   },
   "keywords": [
     "http",
@@ -21,10 +21,12 @@
     "request"
   ],
   "devDependencies": {
+    "assert-100": "~1.1.0",
     "concat-stream": "~1.5.1",
     "from2-string": "~1.1.0",
     "mock-req": "~0.2.0",
     "nock": "~8.0.0",
+    "nyc": "~7.1.0",
     "proxyquire": "~1.7.10",
     "shot": "~3.1.0",
     "standard": "^7.0.0",
