@@ -38,7 +38,7 @@
     "schemas/"
   ],
   "dependencies": {
-    "absoluteify": "~1.0.0",
+    "absoluteify": "~1.0.1",
     "ajv": "~4.7.0",
     "ap": "~0.2.0",
     "boolean-filter-obj": "~1.0.0",
