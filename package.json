@@ -53,7 +53,7 @@
     "readable-stream": "~2.1.4",
     "set-cookie-parser": "~1.0.2",
     "simple-get": "~2.2.1",
-    "timed-out": "~2.0.0",
+    "timed-out": "~3.0.0",
     "xtend": "~4.0.1"
   }
 }
