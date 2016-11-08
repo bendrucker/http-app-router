@@ -1,7 +1,7 @@
 'use strict'
 
 const Ajv = require('ajv')
-const ajv = new Ajv({useDefaults: true})
+const ajv = new Ajv({useDefaults: true, unknownFormats: true})
 
 const router = require('./router.json')
 const app = require('./app.json')

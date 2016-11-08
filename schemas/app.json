@@ -39,7 +39,7 @@
     "host": {
       "type": "string",
       "description": "The application's host where it serves HTTPS requests",
-      "format": "host-name"
+      "format": "hostname"
     },
     "insecure": {
       "type": "boolean",
