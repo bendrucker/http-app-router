@@ -287,7 +287,7 @@ test('app request error', function (t) {
 })
 
 test('logs', function (t) {
-  t.plan(1)
+  t.plan(9)
 
   const router = Router([
     {
@@ -307,11 +307,24 @@ test('logs', function (t) {
   const handler = Handler(router, (err) => err && t.end(err))
 
   inject(handler, {method: 'get', url: '/bendrucker'}, function (res) {
-    t.deepEqual(logs, [
-      {level: 'debug', message: '/bendrucker -> default'},
-      {level: 'debug', message: '/bendrucker -> github'},
-      {level: 'info', message: 'github: 200'}
-    ])
+    t.equal(logs.length, 3)
+    t.deepEqual(logs[0], {level: 'debug', message: '/bendrucker -> default'}, 'logs default redirects')
+    t.deepEqual(logs[1], {
+      level: 'info',
+      message: {
+        name: 'github',
+        message: 'request',
+        url: '/bendrucker'
+      }
+    }, 'logs request')
+
+    const response = logs[2].message
+    t.equal(logs[2].level, 'info')
+    t.equal(response.name, 'github')
+    t.equal(response.message, 'response')
+    t.equal(response.url, '/bendrucker')
+    t.equal(response.statusCode, 200)
+    t.equal(typeof response.elapsed, 'number')
   })
 })
 

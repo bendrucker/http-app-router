@@ -71,16 +71,32 @@ function AppRouter (apps) {
 
   function sendApp (app, req, res, options, callback) {
     if (!callback) callback = options
+
+    const start = Date.now()
+
     log.broadcast({
-      level: 'debug',
-      message: `${req.url} -> ${app.name}`
+      level: 'info',
+      message: {
+        name: app.name,
+        message: 'request',
+        url: req.url
+      }
     })
+
     fetch(app, pick(req, ['headers', 'url', 'method']), function (err, html) {
       if (err) return callback(err)
+
       log.broadcast({
         level: 'info',
-        message: `${app.name}: ${html.statusCode}`
+        message: {
+          name: app.name,
+          message: 'response',
+          url: req.url,
+          statusCode: html.statusCode,
+          elapsed: Date.now() - start
+        }
       })
+
       res.statusCode = html.statusCode
 
       const cookies = cookie.outbound(app.cookies, html.headers['set-cookie'])
