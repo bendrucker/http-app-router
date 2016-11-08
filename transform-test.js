@@ -2,7 +2,7 @@
 
 const test = require('tape')
 const proxyquire = require('proxyquire')
-const PassThrough = require('readable-stream/passthrough')
+const PassThrough = require('stream').PassThrough
 const transformify = require('transformify')
 const toStream = require('from2-string')
 const concat = require('concat-stream')

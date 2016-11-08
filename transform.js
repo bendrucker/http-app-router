@@ -1,6 +1,6 @@
 'use strict'
 
-const PassThrough = require('readable-stream').PassThrough
+const PassThrough = require('stream').PassThrough
 const pumpify = require('pumpify')
 const transforms = require('./transforms')
 
