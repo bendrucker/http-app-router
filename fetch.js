@@ -17,6 +17,7 @@ function fetch (app, data, callback) {
   const options = {
     url: ['http', app.insecure ? '' : 's', '://', app.host, data.url].join(''),
     headers: filter(extend(app.headers, {
+      'accept-encoding': 'identity',
       cookie: cookie.inbound(app.cookies, data.headers.cookie)
     })),
     method: data.method

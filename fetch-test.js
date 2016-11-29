@@ -12,7 +12,8 @@ test('fetch', function (t) {
       t.deepEqual(options, {
         url: 'https://host.co/path?page=2',
         headers: {
-          foo: 'bar'
+          foo: 'bar',
+          'accept-encoding': 'identity'
         },
         method: 'GET'
       })
@@ -46,7 +47,8 @@ test('fetch - insecure', function (t) {
       t.deepEqual(options, {
         url: 'http://host.co/path?page=2',
         headers: {
-          foo: 'bar'
+          foo: 'bar',
+          'accept-encoding': 'identity'
         },
         method: 'GET'
       })
