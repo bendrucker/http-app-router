@@ -6,6 +6,7 @@ const TypedError = require('error/typed')
 const pick = require('object.pick')
 const Event = require('geval/event')
 const pump = require('pump')
+const headers = require('standard-headers')
 const validate = require('./validate')
 const fetch = require('./fetch')
 const Transform = require('./transform')
@@ -98,6 +99,10 @@ function AppRouter (apps) {
       })
 
       res.statusCode = html.statusCode
+
+      Object.keys(html.headers)
+        .filter((key) => headers.response.indexOf(key) >= 0)
+        .forEach((key) => res.setHeader(key, html.headers[key]))
 
       const cookies = cookie.outbound(app.cookies, html.headers['set-cookie'])
       if (cookies) res.setHeader('Set-Cookie', cookies)

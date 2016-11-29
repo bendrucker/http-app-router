@@ -247,6 +247,37 @@ test('cookies', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('headers', function (t) {
+  t.plan(2)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*',
+      cookies: [
+        'beep'
+      ]
+    }
+  ])
+
+  const handler = Handler(router, (err) => err && t.end(err))
+
+  nock('https://github.com')
+    .get('/bendrucker')
+    .reply(200, JSON.stringify({foo: 'bar'}), {
+      'Content-Type': 'application/json',
+      'Arbitrary-Key': 'stripped'
+    })
+
+  inject(handler, {method: 'get', url: '/bendrucker'}, function (res) {
+    t.equal(res.headers['content-type'], 'application/json', 'includes standard response headers')
+    t.notOk(res.headers['arbitrary-key'], 'excludes unknown headers')
+  })
+
+  t.on('end', nock.cleanAll)
+})
+
 test('invalid method', function (t) {
   t.plan(1)
 
