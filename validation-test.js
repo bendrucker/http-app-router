@@ -30,7 +30,7 @@ test('validate', function (t) {
       {
         name: 'foo',
         routes: '*',
-        host: '',
+        host: 'foo',
         transforms: ['bad']
       }
     ]), /invalid transform: bad/, 'validates transforms')
@@ -42,12 +42,12 @@ test('validate', function (t) {
       {
         name: 'foo',
         routes: '*',
-        host: ''
+        host: 'foo'
       },
       {
         name: 'bar',
         routes: '*',
-        host: ''
+        host: 'bar'
       }
     ]), /multiple wildcard apps/, 'prevents multiple wildcard routes')
     t.end()
