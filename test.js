@@ -149,6 +149,57 @@ test('HEAD requests are allowed', function (t) {
   })
 })
 
+test('redirect', function (t) {
+  t.plan(2)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*'
+    }
+  ])
+
+  const handler = Handler(router, (err) => err && t.end(err))
+
+  nock('https://github.com')
+    .get('/bendrucker')
+    .reply(302, '', {
+      Location: '/foo'
+    })
+
+  inject(handler, {url: '/bendrucker'}, function (res) {
+    t.equal(res.statusCode, 302)
+    t.equal(res.headers.location, '/foo')
+  })
+})
+
+test('insecure', function (t) {
+  t.plan(2)
+
+  const router = Router([
+    {
+      name: 'github',
+      host: 'github.com',
+      routes: '*',
+      insecure: true
+    }
+  ])
+
+  const handler = Handler(router, (err) => err && t.end(err))
+
+  nock('http://github.com')
+    .get('/bendrucker')
+    .reply(302, '', {
+      Location: '/foo'
+    })
+
+  inject(handler, {url: '/bendrucker'}, function (res) {
+    t.equal(res.statusCode, 302)
+    t.equal(res.headers.location, '/foo')
+  })
+})
+
 test('splats', function (t) {
   t.plan(1)
 

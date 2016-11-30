@@ -1,8 +1,7 @@
 'use strict'
 
 const assert = require('assert')
-const timeout = require('timed-out')
-const get = require('simple-get')
+const got = require('got')
 const extend = require('xtend')
 const filter = require('boolean-filter-obj')
 const cookie = require('./cookie')
@@ -20,9 +19,20 @@ function fetch (app, data, callback) {
       'accept-encoding': 'identity',
       cookie: cookie.inbound(app.cookies, data.headers.cookie)
     })),
-    method: data.method
+    method: data.method,
+    timeout: app.timeout,
+    followRedirect: false
   }
 
-  const req = get(options, callback)
-  if (app.timeout) timeout(req, app.timeout)
+  got.stream(options.url, options)
+    .on('response', function (res) {
+      callback(null, res)
+    })
+    .on('error', function (err, body, res) {
+      if (err.statusCode && err.statusCode < 400) {
+        return callback(null, res)
+      }
+
+      callback(err)
+    })
 }
