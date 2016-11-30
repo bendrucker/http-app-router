@@ -1,7 +1,7 @@
 {
   "name": "http-app-router",
   "main": "index.js",
-  "version": "2.1.3",
+  "version": "3.0.0",
   "description": "Request router for building HTTP proxy servers",
   "license": "MIT",
   "repository": "bendrucker/http-app-router",
