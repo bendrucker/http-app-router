@@ -1,7 +1,9 @@
 'use strict'
 
 const assert = require('assert')
-const got = require('got')
+const url = require('url')
+const http = require('http')
+const https = require('https')
 const extend = require('xtend')
 const filter = require('boolean-filter-obj')
 const cookie = require('./cookie')
@@ -19,20 +21,26 @@ function fetch (app, data, callback) {
       'accept-encoding': 'identity',
       cookie: cookie.inbound(app.cookies, data.headers.cookie)
     })),
-    method: data.method,
-    timeout: app.timeout,
-    followRedirect: false
+    method: data.method.toUpperCase()
   }
 
-  got.stream(options.url, options)
-    .on('response', function (res) {
-      callback(null, res)
-    })
-    .on('error', function (err, body, res) {
-      if (err.statusCode && err.statusCode < 400) {
-        return callback(null, res)
-      }
+  parseUrl(options)
 
-      callback(err)
-    })
+  const protocol = options.protocol === 'https:' ? https : http
+
+  return protocol.request(options, function (res) {
+    callback(null, res)
+  })
+  .on('error', callback)
+  .end()
+}
+
+function parseUrl (data) {
+  const location = url.parse(data.url)
+
+  data.hostname = location.hostname
+  data.protocol = location.protocol
+  data.path = location.path
+
+  delete data.url
 }
