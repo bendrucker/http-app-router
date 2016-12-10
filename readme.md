@@ -84,6 +84,13 @@ Default: `false`
 
 Toggles the app to be fetched over plain HTTP instead of HTTPS.
 
+###### prefix
+
+Type: `string`  
+Default: `''`
+
+A prefix that will be removed from the URL before being passed along.
+
 ###### headers
 
 Type: `object`  

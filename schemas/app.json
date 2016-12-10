@@ -50,6 +50,11 @@
       "type": "object",
       "description": "Headers to set on client requests for the app"
     },
+    "prefix": {
+      "type": "string",
+      "description": "Path prefix to strip",
+      "default": ""
+    },
     "cookies": {
       "type": "array",
       "description": "An array of allowed cookie names that will be passed through to/from the application",

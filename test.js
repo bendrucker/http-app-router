@@ -238,6 +238,31 @@ test('splats', function (t) {
   t.on('end', nock.cleanAll)
 })
 
+test('prefix', function (t) {
+  t.plan(1)
+
+  const router = Router([
+    {
+      name: 'blog',
+      host: 'site.host',
+      routes: '*',
+      prefix: '/blog'
+    }
+  ])
+
+  const handler = Handler(router, (err) => err && t.end(err))
+
+  nock('https://site.host')
+    .get('/hello')
+    .reply(200, 'world')
+
+  inject(handler, {method: 'get', url: '/blog/hello'}, function (res) {
+    t.equal(res.payload, 'world')
+  })
+
+  t.on('end', nock.cleanAll)
+})
+
 test('transforms', function (t) {
   t.plan(1)
 
