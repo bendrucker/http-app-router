@@ -26,9 +26,9 @@
     "from2-string": "~1.1.0",
     "mock-req": "~0.2.0",
     "nock": "~9.0.2",
-    "nyc": "~8.4.0",
+    "nyc": "~10.0.0",
     "proxyquire": "~1.7.10",
-    "shot": "~3.3.1",
+    "shot": "~3.4.0",
     "standard": "^8.0.0",
     "tape": "^4.0.0",
     "transformify": "~0.1.2"
@@ -39,7 +39,7 @@
   ],
   "dependencies": {
     "absoluteify": "~1.0.1",
-    "ajv": "~4.8.0",
+    "ajv": "~4.9.2",
     "ap": "~0.2.0",
     "boolean-filter-obj": "~1.0.0",
     "cookie": "~0.3.1",
